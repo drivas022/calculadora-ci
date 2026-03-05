@@ -1,0 +1,12 @@
+{
+  "name": "calculadora-ci",
+  "version": "1.0.0",
+  "description": "Ejemplo sencillo de CI con GitHub Actions",
+  "main": "calculadora.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
