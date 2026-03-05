@@ -21,8 +21,8 @@ La idea: cada vez que hacés **push** a `main`, GitHub corre el workflow, instal
 calculadora.js             # Funciones (sumar, restar, etc.)
 calculadora.test.js        # Pruebas (Jest)
 package.json               # Config del proyecto y scripts
-package-lock.json          # Bloqueo exacto de dependencias (npm)
 ```
+> Nota: `package-lock.json` se genera automáticamente con `npm install` y ayuda a que las dependencias sean consistentes.
 
 ---
 
@@ -37,6 +37,15 @@ npm install
 ```bash
 npm test
 ```
+
+---
+
+## Estado del CI (importante)
+En este repo hay **2 pruebas hechas para fallar a propósito** (resta y división) para demostrar cómo GitHub Actions marca el pipeline como ❌ cuando una prueba no pasa.
+
+Si querés que el CI quede ✅, cambiá los valores esperados a los correctos:
+- `10 - 3` debe ser `7`
+- `9 / 3` debe ser `3`
 
 ---
 
@@ -69,7 +78,7 @@ jobs:
           node-version: "20"
 
       - name: Instalar dependencias
-        run: npm ci
+        run: npm install
 
       - name: Correr pruebas
         run: npm test
@@ -138,13 +147,13 @@ En los steps aparecen dos claves comunes:
 - **Por qué:** para poder usar `npm` y correr tests.
 - **node-version:** fija la versión (Node 20).
 
-### 3) `npm ci`
+### 3) `npm install`
 ```yaml
 - name: Instalar dependencias
-  run: npm ci
+  run: npm install
 ```
-- **Qué hace:** instala dependencias usando `package-lock.json`.
-- **Por qué:** es instalación “limpia” y estable para CI.
+- **Qué hace:** instala las dependencias del proyecto (Jest incluido).
+- **Por qué:** deja listo el entorno para poder correr `npm test` en GitHub Actions.
 
 ### 4) `npm test`
 ```yaml
@@ -211,7 +220,7 @@ Framework de pruebas. El `^` permite actualizaciones menores/patch dentro de la 
 3) En **Actions** se ejecuta:
    - checkout
    - setup node
-   - `npm ci`
+   - `npm install`
    - `npm test`
 4) Si todo pasa → ✅ verde. Si un test falla → ❌ rojo.
 
